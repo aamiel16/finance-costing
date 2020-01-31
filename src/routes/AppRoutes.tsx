@@ -8,6 +8,7 @@ import Category from '@material-ui/icons/Category';
 import Receipt from '@material-ui/icons/Receipt';
 import Subject from '@material-ui/icons/Subject';
 import LocalShipping from '@material-ui/icons/LocalShipping';
+import Settings from '@material-ui/icons/SettingsRounded';
 import HomePage from "../pages/home/HomePage";
 import ForexPage from "../pages/forex/ForexPage";
 import TransactionPage from "../pages/transaction/TransactionPage";
@@ -16,8 +17,7 @@ import ItemPage from "../pages/item/ItemPage";
 import FeePage from "../pages/fee/FeePage";
 import ShipmentTermPage from "../pages/shipmentTerm/ShipmentTermPage";
 import ShippingMethodPage from "../pages/shippingMethod/ShippingMethodPage";
-
-interface Props {}
+import SettingsPage from "../pages/settings/SettingsPage";
 
 export const APP_ROUTES = [
   {
@@ -63,6 +63,12 @@ export const APP_ROUTES = [
     icon: LocalShipping
   },
   {
+    path: "/settings",
+    component: SettingsPage,
+    title: "Settings",
+    icon: Settings,
+  },
+  {
     path: "/",
     component: HomePage,
     title: "Home",
@@ -70,7 +76,7 @@ export const APP_ROUTES = [
   }
 ];
 
-const AppRoutes = (props: Props) => {
+const AppRoutes = () => {
   const renderRoutes = () => {
     return APP_ROUTES.map(({ path, component: Page }) => (
       <Route key={path} path={path}>
