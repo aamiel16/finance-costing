@@ -2,6 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { default as MuiDrawer } from "@material-ui/core/Drawer";
+import { NavLink } from "react-router-dom";
 import List from "@material-ui/core/List";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
@@ -10,9 +11,8 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import { Metrics } from "../../constants";
+import { APP_ROUTES } from "../../routes/AppRoutes";
 
 interface Props {
   isOpen: boolean;
@@ -23,6 +23,36 @@ interface Props {
 const Drawer: React.FC<Props> = props => {
   const { onClose, isOpen, children } = props;
   const classes = useStyles();
+
+  const renderNavigation = () => {
+    return APP_ROUTES.reduce(
+      (agg: React.ReactNode[], { path, title, icon: Icon }) => {
+        const item = (
+          <ListItem
+            key={path}
+            button
+            className={classes.menuItem}
+            exact
+            to={path}
+            component={NavLink}
+            activeClassName={classes.selected}
+          >
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
+            <ListItemText primary={title} />
+          </ListItem>
+        );
+
+        if (path === "/") {
+          return [item, ...agg];
+        }
+
+        return agg.concat(item);
+      },
+      []
+    );
+  };
 
   return (
     <div className={classes.root}>
@@ -46,16 +76,7 @@ const Drawer: React.FC<Props> = props => {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem className={classes.menuItem} button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        <List>{renderNavigation()}</List>
       </MuiDrawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
@@ -105,6 +126,9 @@ const useStyles = makeStyles(theme => ({
   },
   menuItem: {
     paddingLeft: theme.spacing(3)
+  },
+  selected: {
+    backgroundColor: "rgba(0, 0, 0, 0.08)"
   }
 }));
 export default Drawer;

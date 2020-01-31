@@ -1,13 +1,15 @@
 import React from 'react';
-import AppRouter from './routes/AppRouter';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
 import AppBar from './components/app/HeaderBar';
 
 const App: React.FC = () => {
   return (
-    <AppBar title="Finance Costing">
-      <AppRouter>
-      </AppRouter>
-    </AppBar>
+    <Router>
+      <AppBar title="Finance Costing">
+        <AppRoutes />
+      </AppBar>
+    </Router>
   );
 }
 
