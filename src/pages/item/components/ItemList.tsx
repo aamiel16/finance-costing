@@ -1,5 +1,5 @@
 import React from "react";
-import ListTable from "../../components/lists/ListTable";
+import ListTable from "../../../components/lists/ListTable";
 
 interface Item {
   id: string;
