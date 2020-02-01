@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,13 +8,13 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import ListTableToolbar from './ListTableToolbar';
+import ListTableToolbar from "./ListTableToolbar";
 
 interface Column<DataType> {
   id: string & keyof DataType;
   label: string;
   minWidth?: number;
-  align?: TableCellProps['align'];
+  align?: TableCellProps["align"];
   format?: (value: number) => string;
 }
 
@@ -39,17 +39,19 @@ function ListTable<DataType>(props: Props<DataType>) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (!pagination) return;
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
   return (
-    <Paper className={classes.root}>
+    <Paper className={classes.paper}>
       <ListTableToolbar title={title} numSelected={0} />
       <TableContainer className={classes.container}>
-        <Table>
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               {columns.map(column => (
@@ -64,23 +66,27 @@ function ListTable<DataType>(props: Props<DataType>) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .map(row => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={(row[keyField]) as any}>
-                    {columns.map(column => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+            {rows.map(row => {
+              return (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row[keyField] as any}
+                >
+                  {columns.map(column => {
+                    const value = row[column.id];
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.format && typeof value === "number"
+                          ? column.format(value)
+                          : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
@@ -97,16 +103,18 @@ function ListTable<DataType>(props: Props<DataType>) {
       )}
     </Paper>
   );
-};
+}
 
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  container: {
-    flex: 1
-  }
-});
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      width: "100%",
+      marginBottom: theme.spacing(2)
+    },
+    container: {
+      height: `calc(100vh - (${theme.mixins.toolbar.minHeight}px * 4))`
+    }
+  })
+);
 
 export default ListTable;
