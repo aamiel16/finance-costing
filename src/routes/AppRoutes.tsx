@@ -1,36 +1,46 @@
 import React from "react";
+import isEmpty from "lodash/isEmpty";
 import { Switch, Route } from "react-router-dom";
-import Home from '@material-ui/icons/Home';
-import AttachMoney from '@material-ui/icons/AttachMoney';
-import Description from '@material-ui/icons/Description';
-import Group from '@material-ui/icons/Group';
-import Category from '@material-ui/icons/Category';
-import Receipt from '@material-ui/icons/Receipt';
-import Subject from '@material-ui/icons/Subject';
-import LocalShipping from '@material-ui/icons/LocalShipping';
-import Settings from '@material-ui/icons/SettingsRounded';
+import Home from "@material-ui/icons/Home";
+import AttachMoney from "@material-ui/icons/AttachMoney";
+import Description from "@material-ui/icons/Description";
+import Group from "@material-ui/icons/Group";
+import Category from "@material-ui/icons/Category";
+import Receipt from "@material-ui/icons/Receipt";
+import Subject from "@material-ui/icons/Subject";
+import LocalShipping from "@material-ui/icons/LocalShipping";
+import Settings from "@material-ui/icons/SettingsRounded";
 import HomePage from "../pages/home/HomePage";
 import ForexPage from "../pages/forex/ForexPage";
 import TransactionPage from "../pages/transaction/TransactionPage";
 import SupplierPage from "../pages/supplier/SupplierPage";
 import ItemPage from "../pages/item/ItemPage";
+import ItemAddPage from "../pages/item/ItemAddPage";
 import FeePage from "../pages/fee/FeePage";
 import ShipmentTermPage from "../pages/shipmentTerm/ShipmentTermPage";
 import ShippingMethodPage from "../pages/shippingMethod/ShippingMethodPage";
 import SettingsPage from "../pages/settings/SettingsPage";
 
-export const APP_ROUTES = [
+interface IRoute {
+  path: string;
+  component: React.ComponentType;
+  title?: string;
+  icon?: React.ComponentType;
+  routes?: IRoute[];
+}
+
+export const APP_ROUTES: IRoute[] = [
   {
     path: "/forex",
     component: ForexPage,
     title: "Foreign exchanges",
-    icon: AttachMoney,
+    icon: AttachMoney
   },
   {
     path: "/transactions",
     component: TransactionPage,
     title: "Transactions",
-    icon: Description,
+    icon: Description
   },
   {
     path: "/suppliers",
@@ -42,7 +52,13 @@ export const APP_ROUTES = [
     path: "/items",
     component: ItemPage,
     title: "Items",
-    icon: Category
+    icon: Category,
+    routes: [
+      {
+        path: "/items/add",
+        component: ItemAddPage
+      }
+    ]
   },
   {
     path: "/fees",
@@ -51,22 +67,22 @@ export const APP_ROUTES = [
     icon: Receipt
   },
   {
-    path: "/shipment-terms",
-    component: ShipmentTermPage,
-    title: "Shipment terms",
-    icon: Subject
-  },
-  {
     path: "/shipping-methods",
     component: ShippingMethodPage,
     title: "Shipping methods",
     icon: LocalShipping
   },
   {
+    path: "/shipment-terms",
+    component: ShipmentTermPage,
+    title: "Shipment terms",
+    icon: Subject
+  },
+  {
     path: "/settings",
     component: SettingsPage,
     title: "Settings",
-    icon: Settings,
+    icon: Settings
   },
   {
     path: "/",
@@ -77,19 +93,26 @@ export const APP_ROUTES = [
 ];
 
 const AppRoutes = () => {
-  const renderRoutes = () => {
-    return APP_ROUTES.map(({ path, component: Page }) => (
-      <Route key={path} path={path}>
-        <Page />
-      </Route>
-    ));
+  const renderRoutes = (routesArg: IRoute[]) => {
+    return routesArg.map(({ path, routes, component: Page }) => {
+      if (isEmpty(routes)) {
+        return (
+          <Route key={path} path={path}>
+            <Page />
+          </Route>
+        );
+      }
+
+      return [
+        ...renderRoutes(routes),
+        <Route key={path} path={path}>
+          <Page />
+        </Route>
+      ];
+    });
   };
 
-  return (
-    <Switch>
-      {renderRoutes()}
-    </Switch>
-  );
+  return <Switch>{renderRoutes(APP_ROUTES)}</Switch>;
 };
 
 export default AppRoutes;
