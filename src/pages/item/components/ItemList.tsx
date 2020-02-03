@@ -7,7 +7,7 @@ interface Item {
   description?: string;
 }
 
-const rows = Array(10)
+const rows = Array(50)
   .fill(null)
   .map((_, idx: number) => ({
     id: String(idx),
