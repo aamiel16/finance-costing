@@ -1,13 +1,13 @@
 import React from "react";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { default as MuiDrawer } from "@material-ui/core/Drawer";
 import { NavLink } from "react-router-dom";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import MuiDrawer from "@material-ui/core/Drawer";
 import { Metrics } from "../../constants";
 import { APP_ROUTES } from "../../routes/AppRoutes";
 

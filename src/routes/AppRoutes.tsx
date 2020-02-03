@@ -23,7 +23,7 @@ import SettingsPage from "../pages/settings/SettingsPage";
 
 interface IRoute {
   path: string;
-  component: React.ComponentType;
+  component: React.ComponentType<any>;
   title?: string;
   icon?: React.ComponentType;
   routes?: IRoute[];
