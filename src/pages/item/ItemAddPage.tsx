@@ -1,46 +1,50 @@
 import React from "react";
-import { Formik } from "formik";
-import Box from "@material-ui/core/Box";
-import TextField from "@material-ui/core/TextField";
+import { Formik, FieldProps, FormikProps } from "formik";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Page from "../../components/page/Page";
-import SaveFab from '../../components/buttons/SaveFab';
+import SaveFab from "../../components/buttons/SaveFab";
+import TextField from "../../components/forms/TextField";
+import BackFab from "../../components/buttons/BackFab";
 
-interface Props {}
+interface Props extends FieldProps {}
 
-function ItemAddPage(props) {
+function ItemAddPage(props: Props) {
+  // Hooks
   const classes = useStyles();
 
+  // Render
   return (
     <Page title="Add item">
-      <SaveFab onSave={() => {}} />
-      <Formik initialValues={{}} onSubmit={() => {}}>
-        <>
-          <Box marginY={1} width="30%">
+      <Formik
+        initialValues={{
+          name: "",
+          description: "",
+          supplier: "",
+          unitcost: ""
+        }}
+        onSubmit={(values: any) => { console.log('Saving: ', values) }}
+      >
+        {(props: FormikProps<{}>) => (
+          <>
+            {props.dirty ? <SaveFab disabled={props.isSubmitting} onSave={props.submitForm} /> : <BackFab />}
+            <TextField label="Name" name="name" className={classes.field} />
             <TextField
-              error
-              fullWidth
-              label="Name"
-              variant="outlined"
-              helperText="Required"
+              label="Description"
+              name="description"
+              className={classes.field}
             />
-          </Box>
-          <TextField
-            className={classes.field}
-            label="Description"
-            variant="outlined"
-          />
-          <TextField
-            className={classes.field}
-            label="Supplier"
-            variant="outlined"
-          />
-          <TextField
-            className={classes.field}
-            label="Unit cost"
-            variant="outlined"
-          />
-        </>
+            <TextField
+              label="Supplier"
+              name="supplier"
+              className={classes.field}
+            />
+            <TextField
+              label="Unit cost"
+              name="unitcost"
+              className={classes.field}
+            />
+          </>
+        )}
       </Formik>
     </Page>
   );
@@ -50,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     field: {
       marginTop: theme.spacing(),
-      marginBottom: theme.spacing(),
+      marginBottom: theme.spacing()
     }
   })
 );
