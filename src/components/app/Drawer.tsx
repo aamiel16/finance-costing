@@ -54,7 +54,7 @@ const Drawer: React.FC<Props> = props => {
         className={classes.drawer}
         variant="permanent"
         classes={{
-          paper: classes.drawerPaper,
+          paper: classes.drawerPaper
         }}
       >
         <div className={classes.toolbar} />
@@ -69,26 +69,31 @@ const Drawer: React.FC<Props> = props => {
   );
 };
 
-const useStyles = makeStyles((theme: Theme) => 
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: 'flex',
+      display: "flex"
     },
     drawer: {
       width: Metrics.drawerWidth,
-      flexShrink: 0,
+      flexShrink: 0
     },
     drawerPaper: {
-      width: Metrics.drawerWidth,
+      width: Metrics.drawerWidth
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(3),
+      [theme.breakpoints.down("xs")]: {
+        padding: theme.spacing(2)
+      },
+      [theme.breakpoints.up("sm")]: {
+        padding: theme.spacing(3)
+      }
     },
     selected: {
       backgroundColor: "rgba(0, 0, 0, 0.08)"
     },
-    toolbar: theme.mixins.toolbar as CSSProperties,
+    toolbar: theme.mixins.toolbar as CSSProperties
   })
 );
 

@@ -9,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import ListTableToolbar from "./ListTableToolbar";
+import { Metrics } from "../../constants";
 
 interface Column<DataType> {
   id: string & keyof DataType;
@@ -108,11 +109,10 @@ function ListTable<DataType>(props: Props<DataType>) {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
-      width: "100%",
-      marginBottom: theme.spacing(2)
+      width: "100%"
     },
     container: {
-      height: `calc(100vh - (${theme.mixins.toolbar.minHeight}px * 4))`
+      maxHeight: Metrics.maxHeight(theme)(4)
     }
   })
 );

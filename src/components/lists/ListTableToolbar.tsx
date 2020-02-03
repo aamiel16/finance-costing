@@ -10,7 +10,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 
 interface Props {
   title: string;
@@ -19,24 +19,23 @@ interface Props {
 
 const ListTableToolbar = (props: Props) => {
   const classes = useStyles();
-  const { title = '', numSelected = 0 } = props;
+  const { title = "", numSelected = 0 } = props;
 
   return (
     <Toolbar
-      className={clsx(classes.root, {
+      className={clsx({
         [classes.highlight]: numSelected > 0
       })}
     >
       {numSelected > 0 ? (
         <Typography
-          className={classes.title}
           color="inherit"
           variant="subtitle1"
         >
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle">
+        <Typography noWrap variant="h6">
           {title}
         </Typography>
       )}
@@ -53,24 +52,17 @@ const ListTableToolbar = (props: Props) => {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(1),
-    },
     highlight:
-      theme.palette.type === 'light'
+      theme.palette.type === "light"
         ? {
             color: theme.palette.secondary.main,
-            backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+            backgroundColor: lighten(theme.palette.secondary.light, 0.85)
           }
         : {
             color: theme.palette.text.primary,
-            backgroundColor: theme.palette.secondary.dark,
-          },
-    title: {
-      flex: '1 1 100%',
-    },
-  }),
+            backgroundColor: theme.palette.secondary.dark
+          }
+  })
 );
 
 export default ListTableToolbar;
