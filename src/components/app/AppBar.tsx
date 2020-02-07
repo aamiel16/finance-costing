@@ -4,14 +4,14 @@ import MuiAppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Drawer from "./Drawer";
+import { Drawer } from "./Drawer";
 
-interface Props {
+export interface AppBarProps {
   title: string;
   children: React.ReactNode;
 }
 
-const AppBar: React.FC<Props> = props => {
+export const AppBar: React.FC<AppBarProps> = props => {
   const { title, children } = props;
   const classes = useStyles();
 
@@ -45,5 +45,3 @@ const useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.drawer + 1,
   },
 }));
-
-export default AppBar;

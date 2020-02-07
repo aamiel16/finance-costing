@@ -4,12 +4,15 @@ import { Field as FormikField, FieldProps as FormikFieldProps } from "formik";
 import Grid from "@material-ui/core/Grid";
 import MuiTextField from "@material-ui/core/TextField";
 
-interface Props {
+type FieldProps = Omit<TextFieldProps, 'name'> & FormikFieldProps;
+
+export interface TextFieldProps {
+  name: string;
   label: string;
   className?: string;
 }
 
-function Field(props: Props & FormikFieldProps) {
+function Field(props: FieldProps) {
   const { label, className, field, meta } = props;
   const { name, value, onBlur, onChange } = field;
   const { initialTouched, initialError, initialValue, touched, error } = meta;
@@ -35,7 +38,7 @@ function Field(props: Props & FormikFieldProps) {
   );
 }
 
-function TextField(props: Props & { name: string }) {
+export function TextField(props: TextFieldProps & { name: string }) {
   const { name, ...restProps } = props;
   return (
     <Grid item>
@@ -47,5 +50,3 @@ function TextField(props: Props & { name: string }) {
     </Grid>
   );
 }
-
-export default TextField;

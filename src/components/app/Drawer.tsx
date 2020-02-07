@@ -11,11 +11,11 @@ import MuiDrawer from "@material-ui/core/Drawer";
 import { Metrics } from "../../constants";
 import { APP_ROUTES } from "../../routes/AppRoutes";
 
-interface Props {
+export interface DrawerProps {
   children: React.ReactNode;
 }
 
-const Drawer: React.FC<Props> = props => {
+export const Drawer: React.FC<DrawerProps> = props => {
   const { children } = props;
   const classes = useStyles();
 
@@ -96,5 +96,3 @@ const useStyles = makeStyles((theme: Theme) =>
     toolbar: theme.mixins.toolbar as CSSProperties
   })
 );
-
-export default Drawer;

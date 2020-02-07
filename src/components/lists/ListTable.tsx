@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import ListTableToolbar from "./ListTableToolbar";
 import { Metrics } from "../../constants";
 
-interface Column<DataType> {
+export interface ListTableColumn<DataType> {
   id: string & keyof DataType;
   label: string;
   minWidth?: number;
@@ -19,15 +19,15 @@ interface Column<DataType> {
   format?: (value: number) => string;
 }
 
-interface Props<DataType> {
+export interface ListTableProps<DataType> {
   title: string;
-  columns: Column<DataType>[];
+  columns: ListTableColumn<DataType>[];
   rows: DataType[];
   keyField: string & keyof DataType;
   pagination?: boolean;
 }
 
-function ListTable<DataType>(props: Props<DataType>) {
+function ListTable<DataType>(props: ListTableProps<DataType>) {
   const { title, columns, rows, pagination = false, keyField } = props;
 
   const classes = useStyles();

@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import Box, { BoxProps } from "@material-ui/core/Box";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
-interface Props extends BoxProps {}
+export interface PageContainerProps extends BoxProps {}
 
-function PageContainer(props: Props) {
+export function PageContainer(props: PageContainerProps) {
   const { className, children, ...restProps } = props;
   const classes = useStyles();
   return (
@@ -38,5 +38,3 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-export default PageContainer;

@@ -3,9 +3,9 @@ import clsx from "clsx";
 import Typography, { TypographyProps } from "@material-ui/core/Typography";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 
-interface Props extends TypographyProps {}
+export interface PageHeaderProps extends TypographyProps {}
 
-function PageHeader(props: Props) {
+export function PageHeader(props: PageHeaderProps) {
   const { className, children, ...typoProps } = props;
   const classes = useStyles();
   return (
@@ -24,5 +24,3 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-export default PageHeader;

@@ -1,13 +1,13 @@
 import React from "react";
-import PageHeader from "./PageHeader";
-import PageContainer from "./PageContainer";
+import { PageHeader } from "./PageHeader";
+import { PageContainer } from "./PageContainer";
 
-interface Props {
+export interface PageProps {
   title: string;
   children: React.ReactNode;
 }
 
-function Page(props: Props) {
+export function Page(props: PageProps) {
   const { title, children } = props;
   return (
     <PageContainer>
@@ -16,5 +16,3 @@ function Page(props: Props) {
     </PageContainer>
   );
 }
-
-export default Page;
