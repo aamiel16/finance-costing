@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './routes/AppRoutes';
-import AppBar from './components/app/AppBar';
+import { AppBar } from './components/app/AppBar';
 
 const App: React.FC = () => {
   return (

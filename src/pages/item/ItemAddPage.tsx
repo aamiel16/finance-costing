@@ -1,16 +1,25 @@
 import React from "react";
-import { Formik, FieldProps, FormikProps } from "formik";
+import { Formik, FormikProps, FormikBag } from "formik";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import Page from "../../components/page/Page";
-import SaveFab from "../../components/buttons/SaveFab";
-import TextField from "../../components/forms/TextField";
-import BackFab from "../../components/buttons/BackFab";
+import { Page } from "../../components/page/Page";
+import { TextField } from "../../components/forms/TextField";
+import { SaveFab, BackFab } from "../../components/buttons/Fab";
+import { Item } from '../../types/Item';
 
-interface Props extends FieldProps {}
+export interface ItemAddPageProps {}
 
-function ItemAddPage(props: Props) {
+export function ItemAddPage(props: ItemAddPageProps) {
   // Hooks
   const classes = useStyles();
+
+  async function handleSubmit(values: Item, actions: FormikBag<ItemAddPageProps, Item>) {
+    try {
+      console.log('Saving item: ', values);
+      actions.setSubmitting(false);
+    } catch (e) {
+
+    }
+  }
 
   // Render
   return (
@@ -22,12 +31,17 @@ function ItemAddPage(props: Props) {
           supplier: "",
           unitcost: ""
         }}
-        onSubmit={(values: any) => { console.log('Saving: ', values) }}
+        onSubmit={handleSubmit}
       >
-        {(props: FormikProps<{}>) => (
+        {(props: FormikProps<Item>) => (
           <>
             {props.dirty ? <SaveFab disabled={props.isSubmitting} onSave={props.submitForm} /> : <BackFab />}
             <TextField label="Name" name="name" className={classes.field} />
+            <TextField
+              label="Description"
+              name="description"
+              className={classes.field}
+            />
             <TextField
               label="Description"
               name="description"
@@ -58,5 +72,3 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-export default ItemAddPage;

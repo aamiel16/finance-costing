@@ -1,6 +1,6 @@
 import React from "react";
-import ItemList from "./components/ItemList";
-import AddFab from "../../components/buttons/AddFab";
+import { ItemList } from "./components/ItemList";
+import { AddFab } from "../../components/buttons/Fab";
 
 interface Props {}
 

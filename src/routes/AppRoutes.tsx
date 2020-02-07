@@ -15,7 +15,7 @@ import ForexPage from "../pages/forex/ForexPage";
 import TransactionPage from "../pages/transaction/TransactionPage";
 import SupplierPage from "../pages/supplier/SupplierPage";
 import ItemPage from "../pages/item/ItemPage";
-import ItemAddPage from "../pages/item/ItemAddPage";
+import { ItemAddPage } from "../pages/item/ItemAddPage";
 import FeePage from "../pages/fee/FeePage";
 import ShipmentTermPage from "../pages/shipmentTerm/ShipmentTermPage";
 import ShippingMethodPage from "../pages/shippingMethod/ShippingMethodPage";

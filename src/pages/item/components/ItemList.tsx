@@ -14,7 +14,7 @@ const rows = Array(50)
     name: `Item # ${idx + 1}`
   }));
 
-function ItemList() {
+export function ItemList() {
   return (
     <ListTable<Item>
       pagination
@@ -34,5 +34,3 @@ function ItemList() {
     />
   );
 }
-
-export default ItemList;
