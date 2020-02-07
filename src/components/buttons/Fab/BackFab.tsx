@@ -1,22 +1,24 @@
 import React from "react";
-import Fab from './Fab';
 import BackIcon from "@material-ui/icons/ChevronLeft";
 import { useHistory } from "react-router-dom";
+import { Fab, FabProps } from './Fab';
 
-interface Props {}
+export interface BackFabProps {
+  fabProps?: FabProps;
+}
 
-function BackFab(_: Props) {
+export function BackFab(props: BackFabProps) {
+  const { fabProps = {} } = props;
   const history = useHistory();
 
   return (
     <Fab
       color="secondary"
       aria-label="add"
+      {...fabProps}
       onClick={history.goBack}
     >
       <BackIcon fontSize="large" />
     </Fab>
   );
 }
-
-export default BackFab;

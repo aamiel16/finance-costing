@@ -1,11 +1,11 @@
 import React from "react";
 import clsx from 'clsx';
-import MuiFab, { FabProps } from "@material-ui/core/Fab";
+import MuiFab, { FabProps as MuiFabProps } from "@material-ui/core/Fab";
 import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 
-interface Props extends FabProps {}
+export interface FabProps extends MuiFabProps {}
 
-function Fab(props: Props) {
+export function Fab(props: FabProps) {
   const { className, children, ...fabProps } = props;
   const classes = useStyles();
 
@@ -31,5 +31,3 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-export default Fab;
