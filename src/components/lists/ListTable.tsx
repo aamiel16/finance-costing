@@ -23,12 +23,14 @@ export interface ListTableProps<DataType> {
   title: string;
   columns: ListTableColumn<DataType>[];
   rows: DataType[];
-  keyField: string & keyof DataType;
+  keyField?: string & keyof DataType;
   pagination?: boolean;
 }
 
-function ListTable<DataType>(props: ListTableProps<DataType>) {
-  const { title, columns, rows, pagination = false, keyField } = props;
+function ListTable<DataType>(
+  props: ListTableProps<DataType>
+) {
+  const { title, columns, rows, pagination = false, keyField = "_id" } = props;
 
   const classes = useStyles();
 
@@ -73,7 +75,7 @@ function ListTable<DataType>(props: ListTableProps<DataType>) {
                   hover
                   role="checkbox"
                   tabIndex={-1}
-                  key={row[keyField] as any}
+                  key={(row as any)[keyField]}
                 >
                   {columns.map(column => {
                     const value = row[column.id];
