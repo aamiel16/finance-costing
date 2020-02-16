@@ -1,12 +1,14 @@
-import React from 'react';
-import Page from '../../components/app/Page';
+import React from "react";
+import { FeeList } from "./components/FeeList";
+import { AddFab } from "../../components/buttons/Fab";
 
-interface Props {}
+interface FeePageProps {}
 
-const FeePage: React.FC<Props> = (props) => {
+export function FeePage(props: FeePageProps) {
   return (
-    <Page title='Fee page' />
+    <>
+      <AddFab type="fees" />
+      <FeeList />
+    </>
   );
 }
-
-export default FeePage;
