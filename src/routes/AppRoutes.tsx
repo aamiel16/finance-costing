@@ -16,8 +16,11 @@ import TransactionPage from "../pages/transaction/TransactionPage";
 import SupplierPage from "../pages/supplier/SupplierPage";
 import { ItemPage, ItemAddPage } from "../pages/item";
 import { FeePage, FeeAddPage } from "../pages/fee";
-import ShipmentTermPage from "../pages/shipmentTerm/ShipmentTermPage";
-import ShippingMethodPage from "../pages/shippingMethod/ShippingMethodPage";
+import { ShipmentTermPage, ShipmentTermAddPage } from "../pages/shipmentTerm";
+import {
+  ShippingMethodPage,
+  ShippingMethodAddPage
+} from "../pages/shippingMethod";
 import SettingsPage from "../pages/settings/SettingsPage";
 
 interface IRoute {
@@ -75,13 +78,25 @@ export const APP_ROUTES: IRoute[] = [
     path: "/shipping-methods",
     component: ShippingMethodPage,
     title: "Shipping methods",
-    icon: LocalShipping
+    icon: LocalShipping,
+    routes: [
+      {
+        path: "/add",
+        component: ShippingMethodAddPage
+      }
+    ]
   },
   {
     path: "/shipment-terms",
     component: ShipmentTermPage,
     title: "Shipment terms",
-    icon: Subject
+    icon: Subject,
+    routes: [
+      {
+        path: "/add",
+        component: ShipmentTermAddPage
+      }
+    ]
   },
   {
     path: "/settings",
@@ -98,7 +113,7 @@ export const APP_ROUTES: IRoute[] = [
 ];
 
 const AppRoutes = () => {
-  const renderRoutes = (routesArg: IRoute[], prefix = '') => {
+  const renderRoutes = (routesArg: IRoute[], prefix = "") => {
     return routesArg.map(({ path, routes, component: Page }) => {
       if (isEmpty(routes)) {
         return (
