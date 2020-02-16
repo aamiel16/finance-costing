@@ -1,4 +1,5 @@
 import React from "react";
+import isFn from "lodash/isFunction";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -23,14 +24,26 @@ export interface ListTableProps<DataType> {
   title: string;
   columns: ListTableColumn<DataType>[];
   rows: DataType[];
+  count?: number;
   keyField?: string & keyof DataType;
   pagination?: boolean;
+  onPrevPage?: () => void;
+  onNextPage?: () => void;
+  onRowsPerPageChange?: (limit: number) => void;
 }
 
-function ListTable<DataType>(
-  props: ListTableProps<DataType>
-) {
-  const { title, columns, rows, pagination = false, keyField = "_id" } = props;
+function ListTable<DataType>(props: ListTableProps<DataType>) {
+  const {
+    title,
+    columns,
+    rows,
+    count,
+    pagination = false,
+    keyField = "_id",
+    onPrevPage,
+    onNextPage,
+    onRowsPerPageChange
+  } = props;
 
   const classes = useStyles();
 
@@ -39,6 +52,11 @@ function ListTable<DataType>(
 
   const handleChangePage = (_, newPage: number) => {
     if (!pagination) return;
+    if (page < newPage) {
+      isFn(onNextPage) && onNextPage();
+    } else {
+      isFn(onPrevPage) && onPrevPage();
+    }
     setPage(newPage);
   };
 
@@ -46,8 +64,10 @@ function ListTable<DataType>(
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (!pagination) return;
-    setRowsPerPage(+event.target.value);
+    const limit = +event.target.value;
     setPage(0);
+    setRowsPerPage(limit);
+    isFn(onRowsPerPageChange) && onRowsPerPageChange(limit);
   };
 
   return (
@@ -97,7 +117,7 @@ function ListTable<DataType>(
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={count || rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
