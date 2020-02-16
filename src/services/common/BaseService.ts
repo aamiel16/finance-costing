@@ -6,34 +6,22 @@ import { uuid } from "uuidv4";
 PouchDB.plugin(PouchFind);
 PouchDB.plugin(PouchUpsert);
 
-export abstract class BaseService<Model> {
-  private name: string;
-  private db: PouchDB.Database;
+export abstract class BaseService<Model = any> {
+  public readonly name: string;
+  public readonly db: PouchDB.Database;
 
   constructor(args: ServiceConstructorArgs) {
     const { name } = args;
     this.name = name;
-  }
-
-  protected getDB() {
-    try {
-      if (!this.db) {
-        this.db = new PouchDB(this.name, {
-          adapter: "idb",
-          auto_compaction: true
-        });
-      }
-
-      return this.db;
-    } catch (e) {
-      throw e;
-    }
+    this.db = new PouchDB(this.name, {
+      adapter: "idb",
+      auto_compaction: true,
+    });
   }
 
   public async get(id: string, opts?: PouchDB.Core.GetOptions) {
     try {
-      const db = this.getDB();
-      const doc = await db.get<Model>(id, opts);
+      const doc = await this.db.get<Model>(id, opts);
       return doc;
     } catch (e) {
       throw e;
@@ -42,9 +30,8 @@ export abstract class BaseService<Model> {
 
   public async upsert(doc: Model & Partial<IdRevisionMeta>) {
     try {
-      const db = this.getDB();
       const id = doc._id || `${this.name}::${uuid()}`;
-      const updated = await db.upsert(id, () => doc);
+      const updated = await this.db.upsert(id, () => doc);
       return updated;
     } catch (e) {
       throw e;
@@ -58,6 +45,10 @@ export abstract class BaseService<Model> {
     } catch (e) {
       throw e;
     }
+  }
+
+  public async getList() {
+
   }
 }
 
