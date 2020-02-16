@@ -1,12 +1,15 @@
-import React from 'react';
-import Page from '../../components/app/Page';
+import React from "react";
+import { ShipmentTermList } from "./components/ShipmentTermList";
+import { AddFab } from "../../components/buttons/Fab";
+import { ROUTE_SHIPMENT_TERM } from "../../constants";
 
-interface Props {}
+interface ShipmentTermPageProps {}
 
-const DeliveryTermPage: React.FC<Props> = (props) => {
+export function ShipmentTermPage(props: ShipmentTermPageProps) {
   return (
-    <Page title='Delivery term page' />
+    <>
+      <AddFab type={ROUTE_SHIPMENT_TERM} />
+      <ShipmentTermList />
+    </>
   );
 }
-
-export default DeliveryTermPage;
