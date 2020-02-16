@@ -2,15 +2,13 @@ import React from "react";
 import { ItemList } from "./components/ItemList";
 import { AddFab } from "../../components/buttons/Fab";
 
-interface Props {}
+interface ItemPageProps {}
 
-const ItemPage: React.FC<Props> = props => {
+export function ItemPage(props: ItemPageProps) {
   return (
     <>
-      <AddFab type='items' />
+      <AddFab type="items" />
       <ItemList />
     </>
   );
-};
-
-export default ItemPage;
+}

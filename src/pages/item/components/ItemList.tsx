@@ -1,25 +1,20 @@
 import React from "react";
 import ListTable from "../../../components/lists/ListTable";
-
-interface Item {
-  id: string;
-  name: string;
-  description?: string;
-}
+import { ItemDoc } from '../../../services/item';
 
 const rows = Array(50)
   .fill(null)
   .map((_, idx: number) => ({
-    id: String(idx),
+    _id: String(idx),
+    _rev: String(idx),
     name: `Item # ${idx + 1}`
   }));
 
 export function ItemList() {
   return (
-    <ListTable<Item>
+    <ListTable<ItemDoc>
       pagination
       title="Items"
-      keyField="id"
       rows={rows}
       columns={[
         {

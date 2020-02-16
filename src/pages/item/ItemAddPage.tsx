@@ -4,7 +4,7 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import { Page } from "../../components/page/Page";
 import { TextField } from "../../components/forms/TextField";
 import { SaveFab, BackFab } from "../../components/buttons/Fab";
-import { Item } from '../../types/Item';
+import { Item } from '../../services/item';
 
 export interface ItemAddPageProps {}
 
