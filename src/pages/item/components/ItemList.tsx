@@ -1,21 +1,20 @@
 import React from "react";
 import ListTable from "../../../components/lists/ListTable";
 import { ItemDoc } from '../../../services/item';
-
-const rows = Array(50)
-  .fill(null)
-  .map((_, idx: number) => ({
-    _id: String(idx),
-    _rev: String(idx),
-    name: `Item # ${idx + 1}`
-  }));
+import { useFetchListItem } from '../../../hooks/item';
 
 export function ItemList() {
+  const { rows, totalRows, setPageLimit, fetchPrev, fetchNext } = useFetchListItem();
+
   return (
     <ListTable<ItemDoc>
       pagination
       title="Items"
       rows={rows}
+      count={totalRows}
+      onPrevPage={fetchPrev}
+      onNextPage={fetchNext}
+      onRowsPerPageChange={setPageLimit}
       columns={[
         {
           id: "name",
