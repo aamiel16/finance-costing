@@ -14,9 +14,8 @@ import HomePage from "../pages/home/HomePage";
 import ForexPage from "../pages/forex/ForexPage";
 import TransactionPage from "../pages/transaction/TransactionPage";
 import SupplierPage from "../pages/supplier/SupplierPage";
-import ItemPage from "../pages/item/ItemPage";
-import { ItemAddPage } from "../pages/item/ItemAddPage";
-import FeePage from "../pages/fee/FeePage";
+import { ItemPage, ItemAddPage } from "../pages/item";
+import { FeePage, FeeAddPage } from "../pages/fee";
 import ShipmentTermPage from "../pages/shipmentTerm/ShipmentTermPage";
 import ShippingMethodPage from "../pages/shippingMethod/ShippingMethodPage";
 import SettingsPage from "../pages/settings/SettingsPage";
@@ -55,7 +54,7 @@ export const APP_ROUTES: IRoute[] = [
     icon: Category,
     routes: [
       {
-        path: "/items/add",
+        path: "/add",
         component: ItemAddPage
       }
     ]
@@ -64,7 +63,13 @@ export const APP_ROUTES: IRoute[] = [
     path: "/fees",
     component: FeePage,
     title: "Fees",
-    icon: Receipt
+    icon: Receipt,
+    routes: [
+      {
+        path: "/add",
+        component: FeeAddPage
+      }
+    ]
   },
   {
     path: "/shipping-methods",
@@ -93,18 +98,18 @@ export const APP_ROUTES: IRoute[] = [
 ];
 
 const AppRoutes = () => {
-  const renderRoutes = (routesArg: IRoute[]) => {
+  const renderRoutes = (routesArg: IRoute[], prefix = '') => {
     return routesArg.map(({ path, routes, component: Page }) => {
       if (isEmpty(routes)) {
         return (
-          <Route key={path} path={path}>
+          <Route key={path} path={`${prefix}${path}`}>
             <Page />
           </Route>
         );
       }
 
       return [
-        ...renderRoutes(routes),
+        ...renderRoutes(routes, path),
         <Route key={path} path={path}>
           <Page />
         </Route>
