@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Field as FormikField, FieldProps as FormikFieldProps } from "formik";
 import Grid from "@material-ui/core/Grid";
 import MuiTextField from "@material-ui/core/TextField";
+import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 
 type FieldProps = Omit<TextFieldProps, 'name'> & FormikFieldProps;
 
@@ -17,6 +18,7 @@ function Field(props: FieldProps) {
   const { name, value, onBlur, onChange } = field;
   const { initialTouched, initialError, initialValue, touched, error } = meta;
 
+  const classes = useStyles();
   const isError = useCallback(
     () => Boolean((initialTouched && initialError) || (touched && error)),
     [initialTouched, initialError, touched, error]
@@ -26,7 +28,7 @@ function Field(props: FieldProps) {
     <MuiTextField
       fullWidth
       variant="outlined"
-      className={clsx(className)}
+      className={clsx(classes.field, className)}
       name={name}
       label={label}
       value={value || initialValue || ""}
@@ -50,3 +52,12 @@ export function TextField(props: TextFieldProps & { name: string }) {
     </Grid>
   );
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    field: {
+      marginTop: theme.spacing(),
+      marginBottom: theme.spacing()
+    }
+  })
+);
