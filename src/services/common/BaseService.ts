@@ -1,6 +1,7 @@
 import PouchDB from "pouchdb";
 import PouchFind from "pouchdb-find";
 import PouchUpsert from "pouchdb-upsert";
+import map from "lodash/map";
 import { uuid } from "uuidv4";
 
 PouchDB.plugin(PouchFind);
@@ -15,7 +16,7 @@ export abstract class BaseService<Model = any> {
     this.name = name;
     this.db = new PouchDB(this.name, {
       adapter: "idb",
-      auto_compaction: true,
+      auto_compaction: true
     });
   }
 
@@ -47,8 +48,34 @@ export abstract class BaseService<Model = any> {
     }
   }
 
-  public async getList() {
+  public async getList(pagination: {
+    limit: number;
+    cursor?: string;
+    descending?: boolean;
+  }): Promise<{ rows: Model[]; totalRows: number; cursor: string }> {
+    try {
+      const { cursor, limit, descending = false } = pagination;
+      const key = cursor || `${this.name}::`;
+      const { total_rows, rows } = await this.db.allDocs({
+        descending,
+        include_docs: true,
+        inclusive_end: true,
+        limit: limit + 1,
+        startkey: key
+      });
 
+      if (descending) {
+        rows.reverse();
+      }
+
+      return {
+        totalRows: total_rows,
+        cursor: rows[rows.length - 1].id,
+        rows: map(rows.slice(0, limit), "doc") as any,
+      };
+    } catch (e) {
+      throw e;
+    }
   }
 }
 
