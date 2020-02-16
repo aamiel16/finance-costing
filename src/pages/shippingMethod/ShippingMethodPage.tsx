@@ -1,12 +1,15 @@
-import React from 'react';
-import Page from '../../components/app/Page';
+import React from "react";
+import { ShippingMethodList } from "./components/ShippingMethodList";
+import { AddFab } from "../../components/buttons/Fab";
+import { ROUTE_SHIPPING_METHOD } from "../../constants";
 
-interface Props {}
+interface ShippingMethodPageProps {}
 
-const ShippingMethodPage: React.FC<Props> = (props) => {
+export function ShippingMethodPage(props: ShippingMethodPageProps) {
   return (
-    <Page title='Shipping method page' />
+    <>
+      <AddFab type={ROUTE_SHIPPING_METHOD} />
+      <ShippingMethodList />
+    </>
   );
 }
-
-export default ShippingMethodPage;
