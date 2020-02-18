@@ -1,14 +1,22 @@
 import React from "react";
 import ListTable from "../../../components/lists/ListTable";
-import { ItemDoc } from '../../../services/item';
-import { useFetchListItem } from '../../../hooks/item';
+import { ItemDoc } from "../../../services/item";
+import { useFetchItemList } from "../../../hooks/item";
 
 export function ItemList() {
-  const { rows, totalRows, setPageLimit, fetchPrev, fetchNext } = useFetchListItem();
+  const {
+    rows,
+    totalRows,
+    loading,
+    setPageLimit,
+    fetchPrev,
+    fetchNext
+  } = useFetchItemList();
 
   return (
     <ListTable<ItemDoc>
       pagination
+      loading={loading}
       title="Items"
       rows={rows}
       count={totalRows}
@@ -18,7 +26,7 @@ export function ItemList() {
       columns={[
         {
           id: "name",
-          label: "Name",
+          label: "Name"
         },
         {
           id: "description",
