@@ -70,8 +70,8 @@ export abstract class BaseService<Model = any> {
 
       return {
         totalRows: total_rows,
-        cursor: rows[rows.length - 1].id,
-        rows: map(rows.slice(0, limit), "doc") as any,
+        cursor: rows.length ? rows[rows.length - 1].id : "",
+        rows: map(rows.slice(0, limit), "doc") as any
       };
     } catch (e) {
       throw e;
