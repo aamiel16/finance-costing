@@ -1,17 +1,24 @@
-import React from "react";
+import React, { Component } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AppBar } from "./components/app/AppBar";
+import { initServices } from "./services";
 import AppRoutes from "./routes/AppRoutes";
-import { useInitServices } from "./hooks/init/useInitServices";
 
-export default function App() {
-  useInitServices();
+interface AppProps {}
 
-  return (
-    <Router>
-      <AppBar title="Finance Costing">
-        <AppRoutes />
-      </AppBar>
-    </Router>
-  );
+export default class App extends Component {
+  constructor(props: AppProps) {
+    super(props);
+    initServices();
+  }
+
+  render() {
+    return (
+      <Router>
+        <AppBar title="Finance Costing">
+          <AppRoutes />
+        </AppBar>
+      </Router>
+    );
+  }
 }
