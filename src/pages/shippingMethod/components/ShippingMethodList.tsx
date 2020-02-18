@@ -1,25 +1,19 @@
 import React from "react";
-import ListTable from "../../../components/lists/ListTable";
-import { ShippingMethod } from '../../../services/shippingMethod';
-
-const rows = Array(50)
-  .fill(null)
-  .map((_, idx: number) => ({
-    _id: String(idx),
-    _rev: String(idx),
-    name: `Shipping method # ${idx + 1}`
-  }));
+import { RecordListTable } from "../../../components/lists";
+import { ShippingMethodDoc } from '../../../services/shippingMethod';
+import { useFetchShippingMethodList } from "../../../hooks/shippingMethod";
 
 export function ShippingMethodList() {
+  const fetchList = useFetchShippingMethodList();
+
   return (
-    <ListTable<ShippingMethod>
-      pagination
+    <RecordListTable<ShippingMethodDoc>
+      {...fetchList}
       title="Shipping methods"
-      rows={rows}
       columns={[
         {
           id: "name",
-          label: "Name",
+          label: "Name"
         },
         {
           id: "description",
