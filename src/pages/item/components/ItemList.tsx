@@ -1,28 +1,15 @@
 import React from "react";
-import ListTable from "../../../components/lists/ListTable";
+import { RecordListTable } from "../../../components/lists";
 import { ItemDoc } from "../../../services/item";
 import { useFetchItemList } from "../../../hooks/item";
 
 export function ItemList() {
-  const {
-    rows,
-    totalRows,
-    loading,
-    setPageLimit,
-    fetchPrev,
-    fetchNext
-  } = useFetchItemList();
+  const fetchList = useFetchItemList();
 
   return (
-    <ListTable<ItemDoc>
-      pagination
-      loading={loading}
+    <RecordListTable<ItemDoc>
+      {...fetchList}
       title="Items"
-      rows={rows}
-      count={totalRows}
-      onPrevPage={fetchPrev}
-      onNextPage={fetchNext}
-      onRowsPerPageChange={setPageLimit}
       columns={[
         {
           id: "name",
