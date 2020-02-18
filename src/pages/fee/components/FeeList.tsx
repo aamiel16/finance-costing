@@ -1,21 +1,15 @@
 import React from "react";
-import ListTable from "../../../components/lists/ListTable";
+import { RecordListTable } from "../../../components/lists";
 import { FeeDoc } from "../../../services/fee";
-
-const rows = Array(50)
-  .fill(null)
-  .map((_, idx: number) => ({
-    _id: String(idx),
-    _rev: String(idx),
-    name: `Fee # ${idx + 1}`
-  }));
+import { useFetchFeeList } from "../../../hooks/fee";
 
 export function FeeList() {
+  const fetchList = useFetchFeeList();
+
   return (
-    <ListTable<FeeDoc>
-      pagination
+    <RecordListTable<FeeDoc>
+      {...fetchList}
       title="Fees"
-      rows={rows}
       columns={[
         {
           id: "name",
