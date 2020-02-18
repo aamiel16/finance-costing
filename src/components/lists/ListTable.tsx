@@ -9,6 +9,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import ListTableToolbar from "./ListTableToolbar";
 import { Metrics } from "../../constants";
 
@@ -27,6 +28,7 @@ export interface ListTableProps<DataType> {
   count?: number;
   keyField?: string & keyof DataType;
   pagination?: boolean;
+  loading?: boolean;
   onPrevPage?: () => void;
   onNextPage?: () => void;
   onRowsPerPageChange?: (limit: number) => void;
@@ -39,6 +41,7 @@ function ListTable<DataType>(props: ListTableProps<DataType>) {
     rows,
     count,
     pagination = false,
+    loading = false,
     keyField = "_id",
     onPrevPage,
     onNextPage,
@@ -70,6 +73,56 @@ function ListTable<DataType>(props: ListTableProps<DataType>) {
     isFn(onRowsPerPageChange) && onRowsPerPageChange(limit);
   };
 
+  const renderRows = () => {
+    if (loading) {
+      return (
+        <TableRow role="checkbox" tabIndex={-1}>
+          <TableCell align="center" colSpan={columns.length}>
+            <CircularProgress />
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    return rows.map(row => (
+      <TableRow
+        hover
+        role="checkbox"
+        tabIndex={-1}
+        key={(row as any)[keyField]}
+      >
+        {columns.map(column => {
+          const value = row[column.id];
+          return (
+            <TableCell key={column.id} align={column.align}>
+              {column.format && typeof value === "number"
+                ? column.format(value)
+                : value}
+            </TableCell>
+          );
+        })}
+      </TableRow>
+    ));
+  };
+
+  const renderPagination = () => {
+    if (!pagination) {
+      return null;
+    }
+
+    return (
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={count || rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    );
+  };
+
   return (
     <Paper className={classes.paper}>
       <ListTableToolbar title={title} numSelected={0} />
@@ -88,42 +141,10 @@ function ListTable<DataType>(props: ListTableProps<DataType>) {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
-            {rows.map(row => {
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={(row as any)[keyField]}
-                >
-                  {columns.map(column => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === "number"
-                          ? column.format(value)
-                          : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
+          <TableBody>{renderRows()}</TableBody>
         </Table>
       </TableContainer>
-      {pagination && (
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={count || rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      )}
+      {renderPagination()}
     </Paper>
   );
 }
@@ -134,6 +155,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%"
     },
     container: {
+      minHeight: Metrics.maxHeight(theme)(4),
       maxHeight: Metrics.maxHeight(theme)(4)
     }
   })
