@@ -34,7 +34,7 @@ export interface ListTableProps<DataType> {
   onRowsPerPageChange?: (limit: number) => void;
 }
 
-function ListTable<DataType>(props: ListTableProps<DataType>) {
+export function ListTable<DataType>(props: ListTableProps<DataType>) {
   const {
     title,
     columns,
@@ -79,6 +79,16 @@ function ListTable<DataType>(props: ListTableProps<DataType>) {
         <TableRow role="checkbox" tabIndex={-1}>
           <TableCell align="center" colSpan={columns.length}>
             <CircularProgress />
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (!rows.length) {
+      return (
+        <TableRow role="checkbox" tabIndex={-1}>
+          <TableCell align="center" colSpan={columns.length}>
+            No records
           </TableCell>
         </TableRow>
       );
@@ -160,5 +170,3 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-export default ListTable;
