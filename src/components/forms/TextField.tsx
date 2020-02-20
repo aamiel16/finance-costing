@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import capitalize from 'lodash/capitalize';
 import clsx from "clsx";
 import { Field as FormikField, FieldProps as FormikFieldProps } from "formik";
 import Grid from "@material-ui/core/Grid";
@@ -32,7 +33,7 @@ function Field(props: FieldProps) {
       name={name}
       label={label}
       value={value || initialValue || ""}
-      helperText={error || initialError || ""}
+      helperText={isError() && capitalize(error || initialError)}
       onBlur={onBlur}
       onChange={onChange}
       error={isError()}
