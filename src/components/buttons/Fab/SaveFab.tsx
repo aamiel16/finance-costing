@@ -12,6 +12,7 @@ export interface SaveFabProps {
 export function SaveFab(props: SaveFabProps) {
   const { disabled = false, onSave, fabProps = {} } = props;
 
+
   function handleClick(e: React.MouseEvent) {
     if (disabled) return;
     isFn(onSave) && onSave(e);
@@ -21,6 +22,7 @@ export function SaveFab(props: SaveFabProps) {
     <Fab
       color="secondary"
       aria-label="add"
+      disabled={disabled}
       {...fabProps}
       onClick={handleClick}
     >
