@@ -1,13 +1,13 @@
 import React from "react";
 import { RecordListTable } from "../../../components/lists";
-import { ShipmentTermDoc } from "../../../services/shipmentTerm";
+import { ShipmentTermDocument } from "../../../services/shipmentTerm";
 import { useFetchShipmentTermList } from "../../../hooks/shipmentTerm";
 
 export function ShipmentTermList() {
   const fetchList = useFetchShipmentTermList();
 
   return (
-    <RecordListTable<ShipmentTermDoc>
+    <RecordListTable<ShipmentTermDocument>
       {...fetchList}
       title="Shipment terms"
       columns={[
