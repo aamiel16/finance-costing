@@ -1,8 +1,8 @@
-import { PouchDoc } from "../common";
+import { ToPouchDocument } from "../../types";
 
 export interface ShipmentTerm {
   name: string;
   description?: string;
 }
 
-export type ShipmentTermDoc = PouchDoc<ShipmentTerm>;
+export type ShipmentTermDocument = ToPouchDocument<ShipmentTerm>;
