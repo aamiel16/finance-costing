@@ -1,19 +1,26 @@
 import PouchDB from "pouchdb";
 import PouchFind from "pouchdb-find";
 import PouchUpsert from "pouchdb-upsert";
+import { ObjectSchema } from 'yup';
 import map from "lodash/map";
+import replace from "lodash/replace";
 import { uuid } from "uuidv4";
+import { IdRevisionMeta } from "../../types";
 
 PouchDB.plugin(PouchFind);
 PouchDB.plugin(PouchUpsert);
 
 export abstract class BaseService<Model = any> {
   public readonly name: string;
+  public readonly prefix: string;
+  public readonly schema: ObjectSchema;
   public readonly db: PouchDB.Database;
 
   constructor(args: ServiceConstructorArgs) {
-    const { name } = args;
+    const { name, schema } = args;
     this.name = name;
+    this.schema = schema;
+    this.prefix = `${this.name}::`;
     this.db = new PouchDB(this.name, {
       adapter: "idb",
       auto_compaction: true
@@ -31,18 +38,24 @@ export abstract class BaseService<Model = any> {
 
   public async upsert(doc: Model & Partial<IdRevisionMeta>) {
     try {
-      const id = doc._id || `${this.name}::${uuid()}`;
-      const updated = await this.db.upsert(id, () => doc);
-      return updated;
+      const id = doc._id || this.addIdPrefix(uuid());
+      await this.schema.validate(doc);
+      const { rev } = await this.db.upsert(id, () => doc);
+      return {
+        ...doc,
+        _id: id,
+        _rev: rev,
+      };
     } catch (e) {
+      console.log('upsert e: ', e);
       throw e;
     }
   }
 
   public async delete(id: string) {
     try {
-      await this.upsert({ _id: id, _deleted: true } as any);
-      return { id, success: true };
+      await this.db.upsert(id, () => ({ _id: id, _deleted: true }));
+      return { _id: id, success: true };
     } catch (e) {
       throw e;
     }
@@ -77,10 +90,17 @@ export abstract class BaseService<Model = any> {
       throw e;
     }
   }
+
+  public addIdPrefix(_id: string) {
+    return `${this.prefix}${_id}`;
+  }
+
+  public removeIdPrefix(_id: string) {
+    return replace(_id, this.prefix, '');
+  }
 }
 
-export type IdRevisionMeta = PouchDB.Core.IdMeta & PouchDB.Core.RevisionIdMeta;
 export interface ServiceConstructorArgs {
   name: string;
+  schema?: ObjectSchema;
 }
-export type PouchDoc<T> = T & IdRevisionMeta;
