@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { ServiceContainer } from "../../services/common";
-import { Doctypes } from "../../constants";
+import { Doctype } from "../../constants";
 
-export function makeUseFetchRecordList(doctype: Doctypes) {
+export function makeUseFetchRecordList(doctype: Doctype) {
   return () => {
     const [list, setList] = useState({
       rows: [],
