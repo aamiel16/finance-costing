@@ -1,26 +1,20 @@
 import React from "react";
-import { Formik, FormikProps, FormikBag } from "formik";
+import { Formik, FormikProps } from "formik";
 import { Page } from "../../components/page/Page";
-import { TextField } from "../../components/forms/TextField";
-import { SaveFab, BackFab } from "../../components/buttons/Fab";
-import { Item } from "../../services/item";
+import { TextField, ErrorMessage } from "../../components/forms";
+import { SaveFab } from "../../components/buttons/Fab";
+import { Item, ItemSchema } from "../../services/item";
+import { useUpsertItem } from "../../hooks/item";
 
 export interface ItemAddPageProps {}
 
 export function ItemAddPage(props: ItemAddPageProps) {
-  async function handleSubmit(
-    values: Item,
-    actions: FormikBag<ItemAddPageProps, Item>
-  ) {
-    try {
-      console.log("Saving item: ", values);
-      actions.setSubmitting(false);
-    } catch (e) {}
-  }
+  const { upsert, error } = useUpsertItem();
 
   // Render
   return (
     <Page title="Add item">
+      <ErrorMessage message={error} />
       <Formik
         initialValues={{
           name: "",
@@ -28,20 +22,13 @@ export function ItemAddPage(props: ItemAddPageProps) {
           supplier: "",
           unitcost: ""
         }}
-        onSubmit={handleSubmit}
+        validationSchema={ItemSchema}
+        onSubmit={upsert}
       >
-        {(props: FormikProps<Item>) => (
+        {({ dirty, isSubmitting, submitForm }: FormikProps<Item>) => (
           <>
-            {props.dirty ? (
-              <SaveFab
-                disabled={props.isSubmitting}
-                onSave={props.submitForm}
-              />
-            ) : (
-              <BackFab />
-            )}
+            <SaveFab disabled={!dirty || isSubmitting} onSave={submitForm} />
             <TextField label="Name" name="name" />
-            <TextField label="Description" name="description" />
             <TextField label="Description" name="description" />
             <TextField label="Supplier" name="supplier" />
             <TextField label="Unit cost" name="unitcost" />
