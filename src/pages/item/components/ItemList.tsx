@@ -1,13 +1,13 @@
 import React from "react";
 import { RecordListTable } from "../../../components/lists";
-import { ItemDoc } from "../../../services/item";
+import { ItemDocument } from "../../../services/item";
 import { useFetchItemList } from "../../../hooks/item";
 
 export function ItemList() {
   const fetchList = useFetchItemList();
 
   return (
-    <RecordListTable<ItemDoc>
+    <RecordListTable<ItemDocument>
       {...fetchList}
       title="Items"
       columns={[
