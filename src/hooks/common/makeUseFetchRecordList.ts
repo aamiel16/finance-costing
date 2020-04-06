@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo, useRef } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { ServiceContainer } from "../../services/common";
 import { Doctype } from "../../constants";
 
@@ -12,41 +12,53 @@ export function makeUseFetchRecordList(doctype: Doctype) {
     const mountedRef = useRef(false);
     const [loading, setLoading] = useState(false);
     const [limit, setPageLimit] = useState(10);
-    const [prevCursor, setPrevCursor] = useState("");
-    const [currCursor, setCurrCursor] = useState("");
-
-    const processResult = useMemo(
-      () => ({ rows, totalRows, cursor }) => {
-        if (mountedRef.current) {
-          setList({ rows, totalRows });
-          setPrevCursor(currCursor);
-          setCurrCursor(cursor);
-          setLoading(false);
-        }
-      },
-      [currCursor]
-    );
+    const [page, setPage] = useState(0);
+    const [cursorArr, setCursorArr] = useState([]);
 
     const fetchFirst = useCallback(() => {
       const service = ServiceContainer.get(doctype);
-      setCurrCursor("");
       setLoading(true);
-      service.getList({ limit, cursor: "" }).then(processResult);
-    }, [limit, processResult]);
+      service
+        .getList({ limit, cursor: "" })
+        .then(({ rows, totalRows, cursor }) => {
+          if (mountedRef.current) {
+            setList({ rows, totalRows });
+            setCursorArr([cursor]);
+            setPage(0);
+            setLoading(false);
+          }
+        });
+    }, [limit]);
 
     const fetchPrev = useCallback(() => {
       const service = ServiceContainer.get(doctype);
       setLoading(true);
       service
-        .getList({ limit, cursor: prevCursor, descending: true })
-        .then(processResult);
-    }, [limit, prevCursor, processResult]);
+        .getList({ limit, cursor: cursorArr[page - 1], descending: true })
+        .then(({ rows, totalRows }) => {
+          if (mountedRef.current) {
+            setList({ rows, totalRows });
+            setCursorArr(arr => arr.slice(0, -1));
+            setPage(page - 1);
+            setLoading(false);
+          }
+        });
+    }, [limit, page, cursorArr]);
 
     const fetchNext = useCallback(() => {
       const service = ServiceContainer.get(doctype);
       setLoading(true);
-      service.getList({ limit, cursor: currCursor }).then(processResult);
-    }, [limit, currCursor, processResult]);
+      service
+        .getList({ limit, cursor: cursorArr[page] })
+        .then(({ rows, totalRows, cursor }) => {
+          if (mountedRef.current) {
+            setList({ rows, totalRows });
+            setCursorArr(arr => arr.concat(cursor));
+            setPage(page + 1);
+            setLoading(false);
+          }
+        });
+    }, [limit, page, cursorArr]);
 
     useEffect(() => {
       mountedRef.current = true;
@@ -54,7 +66,7 @@ export function makeUseFetchRecordList(doctype: Doctype) {
     }, []); // eslint-disable-line
 
     useEffect(() => {
-      if (currCursor) {
+      if (cursorArr.length) {
         fetchFirst();
       }
     }, [limit]); // eslint-disable-line
