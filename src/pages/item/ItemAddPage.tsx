@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, FormikProps } from "formik";
 import { Page } from "../../components/page/Page";
 import { TextField, ErrorMessage } from "../../components/forms";
-import { SaveFab } from "../../components/buttons/Fab";
+import { SaveBackFab } from "../../components/buttons/Fab";
 import { Item, ItemSchema } from "../../services/item";
 import { useUpsertItem } from "../../hooks/item";
 
@@ -15,19 +15,19 @@ export function ItemAddPage(props: ItemAddPageProps) {
   return (
     <Page title="Add item">
       <ErrorMessage message={error} />
-      <Formik
+      <Formik<Item>
         initialValues={{
           name: "",
           description: "",
           supplier: "",
-          unitcost: ""
+          unitcost: "",
         }}
         validationSchema={ItemSchema}
         onSubmit={upsert}
       >
         {({ dirty, isSubmitting, submitForm }: FormikProps<Item>) => (
           <>
-            <SaveFab disabled={!dirty || isSubmitting} onSave={submitForm} />
+            <SaveBackFab dirty={dirty} disabled={isSubmitting} onSave={submitForm} />
             <TextField label="Name" name="name" />
             <TextField label="Description" name="description" />
             <TextField label="Supplier" name="supplier" />

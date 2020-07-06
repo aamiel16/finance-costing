@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, FormikProps, FormikBag } from "formik";
 import { Page } from "../../components/page/Page";
 import { TextField } from "../../components/forms/TextField";
-import { SaveFab, BackFab } from "../../components/buttons/Fab";
+import { SaveBackFab } from "../../components/buttons/Fab";
 import { Fee } from "../../services/fee";
 
 export interface FeeAddPageProps {}
@@ -28,16 +28,13 @@ export function FeeAddPage(props: FeeAddPageProps) {
         }}
         onSubmit={handleSubmit}
       >
-        {(props: FormikProps<Fee>) => (
+        {({ dirty, isSubmitting, submitForm }: FormikProps<Fee>) => (
           <>
-            {props.dirty ? (
-              <SaveFab
-                disabled={props.isSubmitting}
-                onSave={props.submitForm}
-              />
-            ) : (
-              <BackFab />
-            )}
+            <SaveBackFab
+              dirty={dirty}
+              disabled={isSubmitting}
+              onSave={submitForm}
+            />
             <TextField label="Name" name="name" />
             <TextField label="Description" name="description" />
           </>

@@ -1,8 +1,7 @@
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { ServiceContainer } from "../../services/common";
-import { Doctypes } from "../../constants";
 
-export function makeUseFetchRecordList<Doctype>(doctype: Doctypes) {
+export function makeUseFetchRecordList<Doctype>(doctype: Doctype) {
   return (id: string) => {
     const [record, setRecord] = useState(undefined);
 
@@ -20,7 +19,8 @@ export function makeUseFetchRecordList<Doctype>(doctype: Doctypes) {
     );
 
     const fetch = useCallback(() => {
-      const service = ServiceContainer.get(doctype);
+      const service = ServiceContainer.get(doctype as any);
+      setLoading(true);
       service.get(id).then(processResult);
     }, [id, processResult]);
 

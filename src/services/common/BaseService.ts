@@ -39,7 +39,7 @@ export abstract class BaseService<Model = any> {
   public async upsert(doc: Model & Partial<IdRevisionMeta>) {
     try {
       const id = doc._id || this.addIdPrefix(uuid());
-      await this.schema.validate(doc);
+      await this.schema.validate({});
       const { rev } = await this.db.upsert(id, () => doc);
       return {
         ...doc,
